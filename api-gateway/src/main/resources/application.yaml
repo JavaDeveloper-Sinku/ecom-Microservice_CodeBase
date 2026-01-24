@@ -22,3 +22,11 @@ spring:
         url: http://localhost:8082
         predicates:
           -Path=/product/**
+
+
+
+#Rishi singh
+
+# id  Unique Route name
+# Url Backend service actual address
+# predicates Condition matching gateway incoming request's if match then --> request forward
