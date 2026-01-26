@@ -5,12 +5,11 @@ import com.example.billing_service.dto.BillResponse;
 import com.example.billing_service.dto.CreateBillRequest;
 import com.example.billing_service.entity.Bill;
 import com.example.billing_service.repository.BillRepository;
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.Optional;
 import java.util.UUID;
 
 @Service

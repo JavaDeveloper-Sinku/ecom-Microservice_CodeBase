@@ -2,33 +2,21 @@ spring:
   application:
     name: billing-service
 
-
-
   datasource:
-    url: jdbc:h2:mem:billingdb
-    driver-class-name: org.h2.Driver
-    username: sa
-    password:
+    url: jdbc:mysql://localhost:3306/billingdb?createDatabaseIfNotExist=true
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: rootuser99
 
   jpa:
-    database-platform: org.hibernate.dialect.H2Dialect
     hibernate:
       ddl-auto: update
     show-sql: true
 
-  h2:
-    console:
-      enabled: true
-      path: /h2-console
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
 
-
-
-
-
-
-
-
-
-
-
-
+server:
+  port: 8080
