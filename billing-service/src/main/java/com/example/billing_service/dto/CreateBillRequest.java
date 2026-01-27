@@ -11,5 +11,4 @@ public class CreateBillRequest {
     private String orderId;
     private Double amount;
 
-
 }

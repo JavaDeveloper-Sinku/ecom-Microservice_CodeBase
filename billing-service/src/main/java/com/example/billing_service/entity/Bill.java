@@ -1,7 +1,10 @@
 package com.example.billing_service.entity;
 
 
+import com.example.billing_service.enums.PaymentStatus;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +25,9 @@ public class Bill {
     private String orderId;
     private Double amount;
 
-    private String status;   // PENDING, PAID, FAILED, CANCELLED
+    @Enumerated(EnumType.STRING)
+    private PaymentStatus paymentStatus;   // PENDING, PAID, FAILED, CANCELLED
+
     private LocalDateTime createdAt;
     private LocalDateTime paidAt;
 

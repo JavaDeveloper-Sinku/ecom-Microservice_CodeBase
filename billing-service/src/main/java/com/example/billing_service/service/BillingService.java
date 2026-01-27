@@ -1,9 +1,9 @@
 package com.example.billing_service.service;
 
-
 import com.example.billing_service.dto.BillResponse;
 import com.example.billing_service.dto.CreateBillRequest;
 import com.example.billing_service.entity.Bill;
+import com.example.billing_service.enums.PaymentStatus;
 import com.example.billing_service.repository.BillRepository;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,27 +24,30 @@ public class BillingService {
         bill.setBillId(UUID.randomUUID().toString());
         bill.setOrderId(request.getOrderId());
         bill.setAmount(request.getAmount());
-        bill.setStatus("PENDING");
+
+        // ✅ default status backend controlled
+        bill.setPaymentStatus(PaymentStatus.UNPAID);
+
         bill.setCreatedAt(LocalDateTime.now());
 
         Bill saved = billRepository.save(bill);
-
         return mapToResponse(saved);
     }
 
     @Transactional
-    public void updateStatus(String billId, String status) {
+    public void updateStatus(String billId, PaymentStatus newStatus) {
 
         Bill bill = billRepository.findById(billId)
                 .orElseThrow(() -> new RuntimeException("Bill not found"));
 
-        if ("PAID".equals(bill.getStatus())) {
-            return; // idempotent
+        // ✅ idempotent check
+        if (bill.getPaymentStatus() == PaymentStatus.PAID) {
+            return;
         }
 
-        bill.setStatus(status);
+        bill.setPaymentStatus(newStatus);
 
-        if ("PAID".equals(status)) {
+        if (newStatus == PaymentStatus.PAID) {
             bill.setPaidAt(LocalDateTime.now());
         }
 
@@ -62,9 +65,11 @@ public class BillingService {
         response.setBillId(bill.getBillId());
         response.setOrderId(bill.getOrderId());
         response.setAmount(bill.getAmount());
-        response.setStatus(bill.getStatus());
+
+        // ✅ enum mapped directly
+        response.setStatus(bill.getPaymentStatus());
+
         response.setCreatedAt(bill.getCreatedAt());
         return response;
     }
 }
-

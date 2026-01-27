@@ -1,6 +1,7 @@
 package com.example.billing_service.dto;
 
 
+import com.example.billing_service.enums.PaymentStatus;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,7 +14,8 @@ public class BillResponse {
     private String billId;
     private String orderId;
     private Double amount;
-    private String status;
+
+    private PaymentStatus status;   // enum instead of String
 
     private LocalDateTime createdAt;
 
