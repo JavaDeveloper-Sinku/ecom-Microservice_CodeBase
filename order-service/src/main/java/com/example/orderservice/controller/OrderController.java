@@ -14,36 +14,38 @@ public class OrderController {
 
     private final OrderService orderService;
 
-    public OrderController(OrderService orderService){
+    public OrderController(OrderService orderService) {
         this.orderService = orderService;
 
     }
+
     @PostMapping("/{productId}/{quantity}")
-    public Order placeOrder(@PathVariable Long productId, @PathVariable int quantity){
-        return orderService.placeOrder(productId,quantity);
+    public Order placeOrder(@PathVariable Long productId, @PathVariable int quantity) {
+        return orderService.placeOrder(productId, quantity);
     }
+
     @GetMapping("/test/{productId}")
-    public String testFeign(@PathVariable Long productId){
+    public String testFeign(@PathVariable Long productId) {
         ProductResponse product = orderService.getProductByIdUsingFeign(productId);
-        return "Product fetched via Feign: "+ product.getName();
+        return "Product fetched via Feign: " + product.getName();
 
     }
 
     //method
 
     @PostMapping
-    public Order createOrder(@RequestBody Order order){
+    public Order createOrder(@RequestBody Order order) {
         return orderService.createOrder(order);
     }
 
     @GetMapping
-    public List<Order> getAllOrder(){
+    public List<Order> getAllOrder() {
         return orderService.getAllOrders();
 
     }
 
     @GetMapping("/{id}")
-    public Order getOrder(@PathVariable Long id){
+    public Order getOrder(@PathVariable Long id) {
         return orderService.getOrderById(id);
     }
 }

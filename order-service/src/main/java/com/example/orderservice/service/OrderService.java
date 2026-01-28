@@ -20,31 +20,31 @@ public class OrderService {
     private ProductClient productClient;
 
     //Constructor
-    public OrderService(OrderRepository orderRepository,ProductClient productClient){
+    public OrderService(OrderRepository orderRepository, ProductClient productClient) {
         this.orderRepository = orderRepository;
         this.productClient = productClient;
     }
 
-    public ProductResponse getProductByIdUsingFeign(Long productId){
+    public ProductResponse getProductByIdUsingFeign(Long productId) {
         return productClient.getProductById(productId);
     }
 
     //Just testing service
-   public void testFeignCall(Long productId){
-       ProductResponse product = productClient.getProductById(productId);
-       System.out.println("Product fetched via Feign: "+ product.getName());
-   }
+    public void testFeignCall(Long productId) {
+        ProductResponse product = productClient.getProductById(productId);
+        System.out.println("Product fetched via Feign: " + product.getName());
+    }
 
-   public Order placeOrder(Long productId, int quantity){
+    public Order placeOrder(Long productId, int quantity) {
 
         ProductResponse productResponse = productClient.getProductById(productId);
 
-        if (productResponse == null || productResponse.getStock() == null){
+        if (productResponse == null || productResponse.getStock() == null) {
             throw new RuntimeException("Product not found!");
 
         }
 
-        if (productResponse.getStock() <= quantity){
+        if (productResponse.getStock() <= quantity) {
             throw new RuntimeException("Product out of stock!");
 
         }
@@ -56,27 +56,25 @@ public class OrderService {
 
         Order saveOrder = orderRepository.save(order);
 
-       System.out.println("Order placed successfully for "+ productResponse.getName());
-       return saveOrder;
-   }
-
-
-
-
+        System.out.println("Order placed successfully for " + productResponse.getName());
+        return saveOrder;
+    }
 
 
     // Methods
 
-    public Order createOrder(Order order){
+    public Order createOrder(Order order) {
         order.setStatus("PENDING");
         return orderRepository.save(order);
 
     }
-    public List<Order> getAllOrders(){
+
+    public List<Order> getAllOrders() {
         return orderRepository.findAll();
 
     }
-    public Order getOrderById(Long id){
+
+    public Order getOrderById(Long id) {
         return orderRepository.findById(id).orElse(null);
     }
 
